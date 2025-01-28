@@ -1,4 +1,5 @@
 from flet import *
+
 import webbrowser
 
 
@@ -68,12 +69,6 @@ class Portfolio(Container) :
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
                                         ),
-                                        # TextButton("Download CV",
-
-                                        #            style = ButtonStyle(shape = RoundedRectangleBorder(radius = 20),
-                                        #                                side = BorderSide(1, self.color_primary)
-                                        #                                , overlay_color = {"hovered" : self.color_primary})
-                                        # ),
                                     ]
                                 )
                             ]
@@ -863,14 +858,15 @@ class Portfolio(Container) :
         
     def open_url(self,e):
         if e == 0 :
-            webbrowser.open("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
+            self.page.launch_url("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
+            # webbrowser.open("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
         elif e == 1:
-            webbrowser.open("https://github.com/frelixnero")
+            self.page.launch_url("https://github.com/frelixnero")
         elif e == 2 :
-            webbrowser.open("https://x.com/Frelixnero?t=B63-W-Tmvwx3PGMbM9HPWg&s=08")
+            self.page.launch_url("https://x.com/Frelixnero?t=B63-W-Tmvwx3PGMbM9HPWg&s=08")
         elif e == 3 :
-            webbrowser.open("https://www.instagram.com/frelixnero?igsh=YzljYTk1ODg3Zg==")
+            self.page.launch_url("https://www.instagram.com/frelixnero?igsh=YzljYTk1ODg3Zg==")
         elif e == 4 :
-            webbrowser.open("https://wa.me/qr/A3MPE6MABE73F1")
+            self.page.launch_url("https://wa.me/qr/A3MPE6MABE73F1")
 
 app(target = lambda page : Portfolio(page), view = WEB_BROWSER, assets_dir = "assets")
