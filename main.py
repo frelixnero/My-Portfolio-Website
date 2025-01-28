@@ -26,6 +26,7 @@ class Portfolio(Container) :
             animate_offset = self.animation_style,
             offset = transform.Offset(0,0),
             content = Row(
+                spacing = 10,
                 expand = True,
                 controls = [
                     Container(
@@ -41,18 +42,11 @@ class Portfolio(Container) :
                                     expand = True,
                                     spacing = 0,
                                     controls = [
-                                        TextButton("Download CV",
-
-                                                   style = ButtonStyle(shape = RoundedRectangleBorder(radius = 20),
-                                                                       side = BorderSide(1, self.color_primary)
-                                                                       , overlay_color = {"hovered" : self.color_primary})
-                                                   ),
                                         ElevatedButton( content = Image(
                                             src =   "/linkedin.png",
                                             fit = ImageFit.COVER, width = 20, 
                                         ),
-                                            data = "https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info",
-                                            on_click = self.open_url,
+                                            on_click =  lambda e: self.open_url(0),
                                          style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
@@ -61,8 +55,7 @@ class Portfolio(Container) :
                                             src = "/github.png",
                                             fit = ImageFit.COVER, width = 20, 
                                         ),
-                                            data = "https://github.com/frelixnero",
-                                            on_click = self.open_url,
+                                            on_click =  lambda e: self.open_url(1),
                                          style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
@@ -74,12 +67,19 @@ class Portfolio(Container) :
                                          style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
-                                        )
+                                        ),
+                                        # TextButton("Download CV",
+
+                                        #            style = ButtonStyle(shape = RoundedRectangleBorder(radius = 20),
+                                        #                                side = BorderSide(1, self.color_primary)
+                                        #                                , overlay_color = {"hovered" : self.color_primary})
+                                        # ),
                                     ]
                                 )
                             ]
                         )
                     ),
+                    Divider(10),
                     
                     Container(
                         expand = True,
@@ -87,8 +87,8 @@ class Portfolio(Container) :
                         clip_behavior = ClipBehavior.ANTI_ALIAS,
                         margin = 50,
                         shadow = BoxShadow(
-                            spread_radius = 30,
-                            blur_radius = 30,
+                            spread_radius = 20,
+                            blur_radius = 20,
                             color = self.color_primary
                             ),
                         content = Image(
@@ -597,7 +597,6 @@ class Portfolio(Container) :
         )
         self.contact_frame = Container(
             expand = True,
-            # bgcolor = "pink",
             animate_offset = self.animation_style,
             offset = transform.Offset(-2,0),
             content = Column(
@@ -697,34 +696,39 @@ class Portfolio(Container) :
                                             alignment = MainAxisAlignment.START,
                                             spacing = 20,
                                             controls = [
-                                                Container(
-                                                    padding = 10,
+                                                ElevatedButton(
                                                     bgcolor = Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
-                                                    on_click=self.open_url,
-                                                    data = "https://x.com/Frelixnero?t=B63-W-Tmvwx3PGMbM9HPWg&s=08",
-                                                    content = Image(src = "twitter.svg"),
+                                                    on_click =  lambda e: self.open_url(2),
+                                                    content = Container(
+                                                        padding = 10,
+                                                        expand = True,
+                                                        content = Image(src = "twitter.svg", width = 80, height = 80),
+                                                    )
                                                 ),
-                                                Container(
-                                                    padding = 10,
+                                                ElevatedButton(
                                                     bgcolor = Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
-                                                    on_click = self.open_url,
-                                                    data = "https://www.instagram.com/frelixnero?igsh=YzljYTk1ODg3Zg==",
-                                                    content = Image(src = "instagram_svg.svg"),
+                                                    on_click =  lambda e: self.open_url(3),
+                                                    content = Container(
+                                                        padding = 10,
+                                                        expand = True,
+                                                        content = Image(src = "instagram_svg.svg", width = 80, height = 80),
+                                                    )
                                                 ),
-                                                Container(
-                                                    padding = 10,
+                                                ElevatedButton(
                                                     bgcolor = Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
-                                                    on_click = self.open_url,
-                                                    data = "https://wa.me/qr/A3MPE6MABE73F1",
-                                                    content = Image(src = "whatsapp.svg"),
-                                                )
-                                                
+                                                    on_click =  lambda e: self.open_url(4),
+                                                    content = Container(
+                                                        padding = 10,
+                                                        expand = True,
+                                                        content = Image(src = "whatsapp.svg", width = 80, height = 80),
+                                                    )
+                                                ),
                                             ]
                                         ),
                                     ]
@@ -827,7 +831,7 @@ class Portfolio(Container) :
             self.contact_frame.offset.x = 0
         
         self.page.update()
-        print(e)
+
     
     def dark_mode(self,e) :
         if e.control.icon == "dark_mode" :
@@ -858,11 +862,15 @@ class Portfolio(Container) :
         self.page.update()
         
     def open_url(self,e):
-        webbrowser.open(e.control.data)
-    
-        
-def main(page: Page):
-    pass
-
+        if e == 0 :
+            webbrowser.open("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
+        elif e == 1:
+            webbrowser.open("https://github.com/frelixnero")
+        elif e == 2 :
+            webbrowser.open("https://x.com/Frelixnero?t=B63-W-Tmvwx3PGMbM9HPWg&s=08")
+        elif e == 3 :
+            webbrowser.open("https://www.instagram.com/frelixnero?igsh=YzljYTk1ODg3Zg==")
+        elif e == 4 :
+            webbrowser.open("https://wa.me/qr/A3MPE6MABE73F1")
 
 app(target = lambda page : Portfolio(page), view = WEB_BROWSER, assets_dir = "assets")
