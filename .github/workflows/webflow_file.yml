@@ -1,4 +1,5 @@
 name: Web Build + Deployment to Cloudflare Pages
+
 on:
   push:
     branches: 
@@ -28,25 +29,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python ${{ env.PYTHON_VERSION }}
+      - name: Setup Python (Optional)
+        if: hashFiles('requirements.txt') != ''
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install Python Dependencies
+      - name: Install Python Dependencies (Optional)
+        if: hashFiles('requirements.txt') != ''
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true  # Speeds up workflow runs
 
-      - name: Flet Build Web
-        run: |
-          flutter config --no-analytics
-          flet build web --base-url "/" --route-url-strategy hash
+      - name: Install Flet
+        run: pip install flet
+
+      - name: Fetch Flutter Dependencies
+        run: flutter pub get
+
+      - name: Build Flet Web
+        run: flet build web --base-url "/" --route-url-strategy hash
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -59,9 +67,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
@@ -73,7 +78,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "your-cloudflare-project-name"
+          projectName: "my-portfolio-website"  # Replace with your actual Cloudflare project name
           directory: "build/web"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-
