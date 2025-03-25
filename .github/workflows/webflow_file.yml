@@ -1,5 +1,4 @@
 name: Web Build + Deployment to Cloudflare Pages
-
 on:
   push:
     branches: 
@@ -29,34 +28,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python (Optional)
-        if: hashFiles('requirements.txt') != ''
+      - name: Setup Python ${{ env.PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Install Python Dependencies (Optional)
-        if: hashFiles('requirements.txt') != ''
+      - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Setup Flutter
+      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          cache: true  # Speeds up workflow runs
-
-      - name: Install Flet
-        run: pip install flet
-
-      - name: Fetch Flutter Dependencies
-        run: flutter pub get
 
       - name: Build Flet Web
-        run: flet build web --base-url "/" --route-url-strategy hash
+        run: |
+          flet build web --base-url "/" --route-url-strategy hash
+          ls -la build/web  # Debugging: Check if build/web exists
 
       - name: Upload Artifact
+        if: success()
         uses: actions/upload-artifact@v3
         with:
           name: web-build-artifact
@@ -67,17 +60,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
           name: web-build-artifact
           path: build/web
 
+      - name: List Files (Debugging)
+        run: ls -la build/web  # Check if files are downloaded correctly
+
       - name: Deploy to Cloudflare Pages 
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "my-portfolio-website"  # Replace with your actual Cloudflare project name
+          projectName: "my-portfolio-website"  # Replace with your Cloudflare project name
           directory: "build/web"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
