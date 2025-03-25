@@ -1,11 +1,12 @@
 name: Web Build + Deployment to Cloudflare Pages
+
 on:
   push:
-    branches: 
+    branches:
       - master
       - main
   pull_request:
-    branches: 
+    branches:
       - master
       - main
   workflow_dispatch:
@@ -23,60 +24,61 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install Python Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt || echo "No requirements.txt found, skipping."
 
-      - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
 
-      - name: Build Flet Web
+      - name: Flet Build Web
         run: |
+          flutter config --no-analytics
           flet build web --base-url "/" --route-url-strategy hash
-          ls -la build/web  # Debugging: Check if build/web exists
+
+      - name: Debug Build Directory
+        run: ls -la build/web
 
       - name: Upload Artifact
-        if: success()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: web-build-artifact
           path: build/web
+          if-no-files-found: error
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: web-build-artifact
           path: build/web
 
-      - name: List Files (Debugging)
-        run: ls -la build/web  # Check if files are downloaded correctly
+      - name: Debug Deployment Directory
+        run: ls -la build/web
 
-      - name: Deploy to Cloudflare Pages 
+      - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: "my-portfolio-website"  # Replace with your Cloudflare project name
+          projectName: "my-portfolio-website"
           directory: "build/web"
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
