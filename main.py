@@ -105,7 +105,7 @@ class Portfolio(Container) :
                         expand = True,
                         spacing = 20,
                         controls = [
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
                                       padding = 10,
                                       border = Border(bottom = BorderSide(2, self.color_primary)),
                                       content = Column(
@@ -129,15 +129,15 @@ class Portfolio(Container) :
                                           ),
 
 
-                                            Text("Work 01", size = 30, weight = FontWeight.W_900),
+                                            Text("Restaurant & Home Delivery App (Flutter, Firebase, FastAPI, Hive)", size = 30, weight = FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "I'm a python developer with strong expertise in frontend development using tools like Flet and a growing capability in backend systems such as FastAPI. My work spans across web applications, user interface design, and app logic, showcasing proficiency in frameworks that blend Python with interactive, dynamic user experiences.",
+                                            Text(size = 12, value = '''Developed a food ordering app with account registration & Firebase authentication.Implemented a FastAPI backend for processing payments & verifying transactions.Transactions stored both in Firebase Firestore and locally with Hive & SharedPreferences. Users can view & update order statuses, while an admin panel (in progress) manages all orders.Also added a light and darkode which users can change in the settings .''',
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
                                       padding = 10,
                                       border = Border(bottom = BorderSide(2, self.color_primary)),
                                       content = Column(
@@ -159,9 +159,10 @@ class Portfolio(Container) :
                                                              )
                                               ]
                                           ),
-                                            Text("Work 02", size = 30, weight = FontWeight.W_900),
+                                            Text("Mario-style Platformer with Level Editor (Pygame, Python)", size = 30, weight = FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "As a Flet developer, I specialize in creating dynamic, cross-platform web and desktop applications with responsive UI/UX, seamless integration of interactive components, and optimized performance tailored to your business needs",
+                                            Text(size = 12, 
+                                                 value = 'Built a 2D platformer with a custom level editor allowing users to create & modify levels. Utilized advanced data structures (dictionaries, lists, objects) for game logic.Probably my most complex and demandin gprojects, involving intricate collision detection & game mechanics.',
                                                  font_family = self.text_fonts)
                                           ]
                                           
@@ -191,9 +192,9 @@ class Portfolio(Container) :
                                           ),
 
 
-                                            Text("Work 03", size = 30, weight = FontWeight.W_900),
+                                            Text("FastAPI Backend for a Social Media App (FastAPI, JWT, PostgreSQL)", size = 30, weight = FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "As a FastAPI developer, I specialize in creating high-performance, scalable RESTful APIs and robust backend systems to support web and mobile applications. My expertise includes integrating APIs with third-party services, implementing secure authentication systems, and designing microservices architectures. I also provide real-time functionality, thorough testing, and interactive API documentation using OpenAPI standards.",
+                                            Text(size = 12, value = "Developed a RESTful backend allowing users to create accounts & authenticate with JWT. Users can create, like, and fetch posts, as well as retrieve all users. Optimized database queries for performance & security.",
                                                  font_family = self.text_fonts)
                                           ]
                                           
@@ -221,9 +222,71 @@ class Portfolio(Container) :
                                                              )
                                               ]
                                           ),
-                                            Text("Work 04", size = 30, weight = FontWeight.W_900),
+                                            Text("Personal Database App (Flutter, SQLite)", size = 30, weight = FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "I'm a python developer with strong expertise in frontend development using tools like Flet and a growing capability in backend systems such as FastAPI. My work spans across web applications, user interface design, and app logic, showcasing proficiency in frameworks that blend Python with interactive, dynamic user experiences.",
+                                            Text(size = 12, value = "Built a CRUD-based database app where users can store personal information (Name, Age, Email, Address). Implemented SQLite database for local storage.",
+                                                 font_family = self.text_fonts)
+                                          ]
+                                          
+                                      )
+                                      ),
+                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                                      padding = 10,
+                                      border = Border(bottom = BorderSide(2, self.color_primary)),
+                                      content = Column(
+                                          controls = [
+                                            Row(
+                                              expand = True,
+                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              spacing = 20,
+                                              controls = [
+                                                  Text("05", size = 30, weight = FontWeight.W_900,
+                                                       font_family = "Starjhol"),
+                                                  IconButton(icon = Icons.ARROW_OUTWARD,
+                                                             
+                                                             style = ButtonStyle(
+                                                                
+                                                                 bgcolor = self.color_primary,
+                                                                 
+                                                             ),
+                                                             
+                                                             )
+                                              ]
+                                          ),
+                                            Text("Paystack Payment Processor for Mobile Apps (FastAPI, Paystack API, Flutter)", size = 30, weight = FontWeight.W_900),
+                                            
+                                            Text(size = 12, value = "Developed a FastAPI backend for initiating & verifying Paystack transactions in Flutter apps. Ensured secure payment processing & seamless integration with mobile applications.",
+                                                 font_family = self.text_fonts)
+                                          ]
+                                          
+                                      )
+                                      ),
+                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                                      padding = 10,
+                                      border = Border(bottom = BorderSide(2, self.color_primary)),
+                                      content = Column(
+                                          controls = [
+                                            Row(
+                                              expand = True,
+                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              spacing = 20,
+                                              controls = [
+                                                  Text("06", size = 30, weight = FontWeight.W_900,
+                                                       font_family = "Starjhol"),
+                                                  IconButton(icon = Icons.ARROW_OUTWARD,
+                                                             style = ButtonStyle(
+                                                                 bgcolor = self.color_primary,
+                                                                 
+                                                             ),
+                                                             
+                                                             )
+                                                ]
+                                          ),
+                                            Text("abit Tracker App with Calendar Heatmap (Flutter, Isar)", size = 30, weight = FontWeight.W_900),
+                                            
+                                            Text(size = 12, value = "Designed a habit tracking app where users can log daily activities using a calendar heatmap. Integrated Isar database for data storage and Flutter animations for an engaging UI",
                                                  font_family = self.text_fonts)
                                           ]
                                           
