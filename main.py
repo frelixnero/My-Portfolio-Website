@@ -1,6 +1,75 @@
+from typing import List
 from flet import *
 
-import webbrowser
+class ProjectImage(View):
+    def __init__(self, page: Page, src: List, title: str, sub_title: str, theme_mode: ThemeMode):
+        super().__init__(bgcolor="#0c0f14")
+        self.page = page
+        self.img_src = src
+        self.title = title
+        self.sub_title = sub_title
+        self.color_food = "#b9894b"
+        self.container_color = "#141821"
+        self.index = 0
+        self.page.theme_mode = theme_mode
+        self.color_primary = Colors.PURPLE_400
+        self.build_view()
+
+    def build_view(self):
+        self.main_container = Container( 
+            alignment=alignment.center,
+            margin=10,
+            expand=True,
+            image=DecorationImage(src=self.img_src[self.index], fit=ImageFit.CONTAIN),
+            content=Column(
+                alignment=MainAxisAlignment.CENTER, horizontal_alignment=CrossAxisAlignment.CENTER, expand=True,
+                controls=[
+                    Row(
+                        alignment=MainAxisAlignment.SPACE_BETWEEN, controls=[
+                            Container(on_click=self.close_productpage, width=30, height=30, border_radius=10,
+                                      content=Icon(icons.KEYBOARD_ARROW_LEFT, color=self.color_primary)),
+                            Container(on_click=self.add_favorites, width=30, height=30, border_radius=10,
+                                      content=Icon(icons.FAVORITE, color=self.color_primary)),
+                        ]
+                    ),
+                    Row(
+                        expand=1, alignment=MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ElevatedButton("PREVIOUS", icon=Icons.KEYBOARD_DOUBLE_ARROW_LEFT_OUTLINED, width=120,
+                                           on_click=lambda e: self.change_image(e, -1),  # Pass -1 for previous
+                                           style=ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                             shape=RoundedRectangleBorder(radius=10),
+                                                             side=BorderSide(1, self.color_primary))),
+                            ElevatedButton("FORWARD", icon=Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=120,
+                                           on_click=lambda e: self.change_image(e, 1), # Pass 1 for next
+                                           style=ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                             shape=RoundedRectangleBorder(radius=10),
+                                                             side=BorderSide(1, self.color_primary)))
+                        ]
+                    ),
+                ]
+            ),
+        )
+        self.controls.append(self.main_container)
+
+    def change_image(self, e, direction): # Added direction parameter
+        self.index += direction
+
+        if self.index < 0:
+            self.index = len(self.img_src) - 1
+        elif self.index >= len(self.img_src):
+            self.index = 0
+
+        self.main_container.image.src = self.img_src[self.index]
+        self.page.update()
+
+    def close_productpage(self, e):
+        self.page.views.pop()
+        self.page.update()
+
+    def add_favorites(self, e):
+        print("Add to favorites clicked")
+        pass
 
 
 class Portfolio(Container) :
@@ -14,6 +83,20 @@ class Portfolio(Container) :
         
         self.color_primary = Colors.PURPLE_400
         self.build()
+    
+    # Work Images
+    def work_images(self,e):
+        img_src = []
+        if e == 0 :
+            img_src = ["/resturant/resturant_1.png","/resturant/resturant_2.png","/resturant/resturant_3.png","/resturant/resturant_4.png","/resturant/resturant_5.png","/resturant/resturant_6.png","/resturant/resturant_7.png","/resturant/resturant_8.png"]
+        elif e == 1 :
+            img_src = ["/mario/mario1.png","/mario/mario2.png","/mario/mario3.png","/mario/mario4.png","/mario/mario5.png","/mario/mario6.png","/mario/mario7.png","/mario/mario8.png","/mario/mario9.png"]
+        elif e == 3 :
+            img_src = ["/database/database1.png","/database/database2.png","/database/database3.png","/database/database4.png","/database/database5.png"]
+        image_view = ProjectImage(page=self.page, src=img_src, title="testing", sub_title="any", theme_mode=self.page.theme_mode) 
+        self.page.views.append(image_view)
+        self.page.update()
+    
         
     def build(self) :
         self.switch_mode = IconButton(icon = icons.DARK_MODE, bgcolor = Colors.DEEP_PURPLE_900, on_click = self.dark_mode)
@@ -123,6 +206,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
+                                                             on_click= lambda e:self.work_images(0)
                                                              
                                                              )
                                               ]
@@ -155,7 +239,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             
+                                                             on_click= lambda e:self.work_images(1)
                                                              )
                                               ]
                                           ),
@@ -186,7 +270,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             
+                                                             on_click= lambda e: self.open_url(6),
                                                              )
                                               ]
                                           ),
@@ -218,11 +302,11 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             
+                                                             on_click= lambda e:self.work_images(3)
                                                              )
                                               ]
                                           ),
-                                            Text("Personal Database App (Flutter, SQLite)", size = 30, weight = FontWeight.W_900),
+                                            Text("Personal Database App (Flet, SQLite)", size = 30, weight = FontWeight.W_900),
                                             
                                             Text(size = 12, value = "Built a CRUD-based database app where users can store personal information (Name, Age, Email, Address). Implemented SQLite database for local storage.",
                                                  font_family = self.text_fonts)
@@ -250,7 +334,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             
+                                                             on_click= lambda e: self.open_url(5),
                                                              )
                                               ]
                                           ),
@@ -280,11 +364,11 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             
+                                                             on_click= lambda e:self.work_images(5)
                                                              )
                                                 ]
                                           ),
-                                            Text("abit Tracker App with Calendar Heatmap (Flutter, Isar)", size = 30, weight = FontWeight.W_900),
+                                            Text("Habit Tracker App with Calendar Heatmap (Flutter, Isar)", size = 30, weight = FontWeight.W_900),
                                             
                                             Text(size = 12, value = "Designed a habit tracking app where users can log daily activities using a calendar heatmap. Integrated Isar database for data storage and Flutter animations for an engaging UI",
                                                  font_family = self.text_fonts)
@@ -931,5 +1015,25 @@ class Portfolio(Container) :
             self.page.launch_url("https://www.instagram.com/frelixnero?igsh=YzljYTk1ODg3Zg==")
         elif e == 4 :
             self.page.launch_url("https://wa.me/qr/A3MPE6MABE73F1")
+        elif e == 5 :
+            self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
+        elif e == 6 :
+            self.page.launch_url("https://github.com/frelixnero/my_fastapi_backend")
+            
+# def main(page: Page):
+    
+        
+
+#     # Timer to wait for 3 seconds before transitioning to main page
+    
+#     # Use a Timer to trigger the navigate_to_main function after 3 seconds
+    
+    
+    
+#     page.add(Portfolio(page))
+#     page.update()
+
+# # Start the Flet app
+# app(target=main, view = WEB_BROWSER, assets_dir = "assets")
 
 app(target = lambda page : Portfolio(page), view = WEB_BROWSER, assets_dir = "assets")
