@@ -94,7 +94,9 @@ class Portfolio(Container) :
         elif e == 3 :
             img_src = ["/database/database1.png","/database/database2.png","/database/database3.png","/database/database4.png","/database/database5.png"]
         image_view = ProjectImage(page=self.page, src=img_src, title="testing", sub_title="any", theme_mode=self.page.theme_mode) 
+        
         self.page.views.append(image_view)
+        # Navigate to the new view using its route
         self.page.update()
     
         
@@ -208,7 +210,16 @@ class Portfolio(Container) :
                                                              ),
                                                              on_click= lambda e:self.work_images(0)
                                                              
-                                                             )
+                                                             ),
+                                                  ElevatedButton( 
+                                                                 content = Image(
+                                                        src = "/github.png",
+                                                        fit = ImageFit.COVER, width = 20, 
+                                                    ),
+                                                        on_click =  lambda e: self.work_images(0),
+                                                    style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
+                                                                        overlay_color = {"hovered" : self.color_primary}),           
+                                                        height = 40,)
                                               ]
                                           ),
 
@@ -270,7 +281,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             on_click= lambda e: self.open_url(6),
+                                                             on_click= lambda e: self.open_url(5),
                                                              )
                                               ]
                                           ),
@@ -306,7 +317,7 @@ class Portfolio(Container) :
                                                              )
                                               ]
                                           ),
-                                            Text("Personal Database App (Flet, SQLite)", size = 30, weight = FontWeight.W_900),
+                                            Text("Personal Database App (Flutter, SQLite)", size = 30, weight = FontWeight.W_900),
                                             
                                             Text(size = 12, value = "Built a CRUD-based database app where users can store personal information (Name, Age, Email, Address). Implemented SQLite database for local storage.",
                                                  font_family = self.text_fonts)
@@ -334,7 +345,7 @@ class Portfolio(Container) :
                                                                  bgcolor = self.color_primary,
                                                                  
                                                              ),
-                                                             on_click= lambda e: self.open_url(5),
+                                                             on_click= lambda e: self.open_url(6),
                                                              )
                                               ]
                                           ),
@@ -1016,10 +1027,9 @@ class Portfolio(Container) :
         elif e == 4 :
             self.page.launch_url("https://wa.me/qr/A3MPE6MABE73F1")
         elif e == 5 :
-            self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
-        elif e == 6 :
             self.page.launch_url("https://github.com/frelixnero/my_fastapi_backend")
-            
+        elif e == 6 :
+            self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
 # def main(page: Page):
     
         
