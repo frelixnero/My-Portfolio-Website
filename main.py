@@ -1,8 +1,8 @@
 from typing import List
-from flet import *
+import flet as ft
 
-class ProjectImage(View):
-    def __init__(self, page: Page, src: List, title: str, sub_title: str, theme_mode: ThemeMode):
+class ProjectImage(ft.View):
+    def __init__(self, page: ft.Page, src: List, title: str, sub_title: str, theme_mode: ft.ThemeMode):
         super().__init__(bgcolor="#0c0f14")
         self.page = page
         self.img_src = src
@@ -12,39 +12,39 @@ class ProjectImage(View):
         self.container_color = "#141821"
         self.index = 0
         self.page.theme_mode = theme_mode
-        self.color_primary = Colors.PURPLE_400
+        self.color_primary = ft.Colors.PURPLE_400
         self.build_view()
 
     def build_view(self):
-        self.main_container = Container( 
-            alignment=alignment.center,
+        self.main_container =ft.Container( 
+            alignment=ft.alignment.center,
             margin=10,
             expand=True,
-            image=DecorationImage(src=self.img_src[self.index], fit=ImageFit.CONTAIN),
-            content=Column(
-                alignment=MainAxisAlignment.CENTER, horizontal_alignment=CrossAxisAlignment.CENTER, expand=True,
+            image=ft.DecorationImage(src=self.img_src[self.index], fit=ft.ImageFit.CONTAIN),
+            content=ft.Column(
+                alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER, expand=True,
                 controls=[
-                    Row(
-                        alignment=MainAxisAlignment.SPACE_BETWEEN, controls=[
-                            Container(on_click=self.close_productpage, width=30, height=30, border_radius=10,
-                                      content=Icon(icons.KEYBOARD_ARROW_LEFT, color=self.color_primary)),
-                            Container(on_click=self.add_favorites, width=30, height=30, border_radius=10,
-                                      content=Icon(icons.FAVORITE, color=self.color_primary)),
+                   ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls=[
+                           ft.Container(on_click=self.close_productpage, width=30, height=30, border_radius=10,
+                                      content=ft.Icon(ft.icons.KEYBOARD_ARROW_LEFT, color=self.color_primary)),
+                           ft.Container(on_click=self.add_favorites, width=30, height=30, border_radius=10,
+                                      content=ft.Icon(ft.icons.FAVORITE, color=self.color_primary)),
                         ]
                     ),
-                    Row(
-                        expand=1, alignment=MainAxisAlignment.SPACE_BETWEEN,
+                   ft.Row(
+                        expand=1, alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
-                            ElevatedButton("PREVIOUS", icon=Icons.KEYBOARD_DOUBLE_ARROW_LEFT_OUTLINED, width=120,
+                            ft.ElevatedButton("PREVIOUS", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_LEFT_OUTLINED, width=120,
                                            on_click=lambda e: self.change_image(e, -1),  # Pass -1 for previous
-                                           style=ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
-                                                             shape=RoundedRectangleBorder(radius=10),
-                                                             side=BorderSide(1, self.color_primary))),
-                            ElevatedButton("FORWARD", icon=Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=120,
+                                           style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                             shape=ft.RoundedRectangleBorder(radius=10),
+                                                             side=ft.BorderSide(1, self.color_primary))),
+                            ft.ElevatedButton("FORWARD", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=120,
                                            on_click=lambda e: self.change_image(e, 1), # Pass 1 for next
-                                           style=ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
-                                                             shape=RoundedRectangleBorder(radius=10),
-                                                             side=BorderSide(1, self.color_primary)))
+                                           style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                             shape=ft.RoundedRectangleBorder(radius=10),
+                                                             side=ft.BorderSide(1, self.color_primary)))
                         ]
                     ),
                 ]
@@ -68,12 +68,11 @@ class ProjectImage(View):
         self.page.update()
 
     def add_favorites(self, e):
-        print("Add to favorites clicked")
         pass
 
 
-class Portfolio(Container) :
-    def __init__(self, page : Page):
+class Portfolio(ft.Container) :
+    def __init__(self, page : ft.Page):
         super().__init__()
         
         self.page = page
@@ -81,7 +80,7 @@ class Portfolio(Container) :
         self.page.fonts = {"Starjhol": "../assets/Starjhol.ttf"}
         self.text_fonts = "Tahoma"
         
-        self.color_primary = Colors.PURPLE_400
+        self.color_primary = ft.Colors.PURPLE_400
         self.build()
     
     # Work Images
@@ -92,65 +91,71 @@ class Portfolio(Container) :
         elif e == 1 :
             img_src = ["/mario/mario1.png","/mario/mario2.png","/mario/mario3.png","/mario/mario4.png","/mario/mario5.png","/mario/mario6.png","/mario/mario7.png","/mario/mario8.png","/mario/mario9.png"]
         elif e == 3 :
+            self.page.launch_url("https://github.com/frelixnero/my_fastapi_backend")
+        elif e == 4 :
             img_src = ["/database/database1.png","/database/database2.png","/database/database3.png","/database/database4.png","/database/database5.png"]
+        elif e == 5 :
+            self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
+        elif e == 6 :
+            return
+        
         image_view = ProjectImage(page=self.page, src=img_src, title="testing", sub_title="any", theme_mode=self.page.theme_mode) 
         
         self.page.views.append(image_view)
-        # Navigate to the new view using its route
         self.page.update()
     
         
     def build(self) :
-        self.switch_mode = IconButton(icon = icons.DARK_MODE, bgcolor = Colors.DEEP_PURPLE_900, on_click = self.dark_mode)
+        self.switch_mode = ft.IconButton(icon = ft.icons.DARK_MODE, bgcolor = ft.Colors.DEEP_PURPLE_900, on_click = self.dark_mode)
         
         
-        self.animation_style = animation.Animation(1000, AnimationCurve.EASE_OUT_CUBIC)
+        self.animation_style = ft.animation.Animation(1000, ft.AnimationCurve.EASE_OUT_CUBIC)
         
-        self.start_frame = Container(
+        self.start_frame =ft.Container(
             expand = True,
             # bgcolor = "grey",
             animate_offset = self.animation_style,
-            offset = transform.Offset(0,0),
-            content = Row(
+            offset = ft.transform.Offset(0,0),
+            content =ft.Row(
                 spacing = 10,
                 expand = True,
                 controls = [
-                    Container(
+                   ft.Container(
                         margin = 20,
                         expand = True,
-                        content = Column(
-                            alignment = MainAxisAlignment.CENTER,
-                            horizontal_alignment = CrossAxisAlignment.CENTER,
+                        content = ft.Column(
+                            alignment = ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                             controls = [
-                                Text("Hello", size = 30, weight = FontWeight.W_800),
-                                Text("I'm Osita", size = 30, weight = FontWeight.W_800, color = self.color_primary),
-                                Row(
+                               ft.Text("Hello", size = 30, weight = ft.FontWeight.W_800),
+                               ft.Text("I'm Osita", size = 30, weight = ft.FontWeight.W_800, color = self.color_primary),
+                               ft.Row(
                                     expand = True,
                                     spacing = 0,
                                     controls = [
-                                        ElevatedButton( content = Image(
+                                        ft.ElevatedButton( content = ft.Image(
                                             src =   "/linkedin.png",
-                                            fit = ImageFit.COVER, width = 20, 
+                                            fit = ft.ImageFit.COVER, width = 20, 
                                         ),
                                             on_click =  lambda e: self.open_url(0),
-                                         style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
+                                         style = ft.ButtonStyle(side = ft.BorderSide(1, self.color_primary),shape = ft.CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
                                         ),
-                                        ElevatedButton( content = Image(
+                                        ft.ElevatedButton( content = ft.Image(
                                             src = "/github.png",
-                                            fit = ImageFit.COVER, width = 20, 
+                                            fit = ft.ImageFit.COVER, width = 20, 
                                         ),
                                             on_click =  lambda e: self.open_url(1),
-                                         style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
+                                         style = ft.ButtonStyle(side = ft.BorderSide(1, self.color_primary),shape = ft.CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
                                         ),
-                                        ElevatedButton( content = Image(
+                                        ft.ElevatedButton( content = ft.Image(
                                             src = "/youtube.png",
-                                            fit = ImageFit.COVER, width = 20, 
+                                            fit = ft.ImageFit.COVER, width = 20, 
                                         ),
-                                         style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
+                                         style = ft.ButtonStyle(side = ft.BorderSide(1, self.color_primary),shape = ft.CircleBorder(),
                                                              overlay_color = {"hovered" : self.color_primary}),           
                                             height = 40,                                        
                                         ),
@@ -159,229 +164,204 @@ class Portfolio(Container) :
                             ]
                         )
                     ),
-                    Divider(10),
+                    ft.Divider(10),
                     
-                    Container(
+                   ft.Container(
                         expand = True,
-                        shape = BoxShape.CIRCLE,
-                        clip_behavior = ClipBehavior.ANTI_ALIAS,
+                        shape = ft.BoxShape.CIRCLE,
+                        clip_behavior = ft.ClipBehavior.ANTI_ALIAS,
                         margin = 50,
-                        shadow = BoxShadow(
+                        shadow = ft.BoxShadow(
                             spread_radius = 20,
                             blur_radius = 20,
                             color = self.color_primary
                             ),
-                        content = Image(
+                        content = ft.Image(
                             src = "/foto.jpg"
                         )
                     )
                 ]
             )
         )
-        self.service_frame = Container(
+        self.service_frame =ft.Container(
             expand = True,
             animate_offset = self.animation_style,
-            offset = transform.Offset(-2,0),
-            content = Column(
+            offset = ft.transform.Offset(-2,0),
+            content = ft.Column(
                 scroll = "auto",
                 expand = True,
                 controls = [
-                    ResponsiveRow(
+                    ft.ResponsiveRow(
                         expand = True,
                         spacing = 20,
                         controls = [
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("01", size = 30, weight = FontWeight.W_900,
-                                                       font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             style = ButtonStyle(
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e:self.work_images(0)
-                                                             
-                                                             ),
-                                                  ElevatedButton( 
-                                                                 content = Image(
-                                                        src = "/github.png",
-                                                        fit = ImageFit.COVER, width = 20, 
-                                                    ),
-                                                        on_click =  lambda e: self.work_images(0),
-                                                    style = ButtonStyle(side = BorderSide(1, self.color_primary),shape = CircleBorder(),
-                                                                        overlay_color = {"hovered" : self.color_primary}),           
-                                                        height = 40,)
-                                              ]
-                                          ),
-
-
-                                            Text("Restaurant & Home Delivery App (Flutter, Firebase, FastAPI, Hive)", size = 30, weight = FontWeight.W_900),
+                                                 ft.Text("01", size = 30, weight = ft.FontWeight.W_900,
+                                                       font_family = "Starjhol",),
+                                                  ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                        on_click =  lambda e: self.work_images(0),  # Pass -1 for previous
+                                                        style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                            shape=ft.RoundedRectangleBorder(radius=10),
+                                                                            side=ft.BorderSide(1, self.color_primary))),
+                                                ]
+                                            ),
                                             
-                                            Text(size = 12, value = '''Developed a food ordering app with account registration & Firebase authentication.Implemented a FastAPI backend for processing payments & verifying transactions.Transactions stored both in Firebase Firestore and locally with Hive & SharedPreferences. Users can view & update order statuses, while an admin panel (in progress) manages all orders.Also added a light and darkode which users can change in the settings .''',
+                                           ft.Text("Restaurant & Home Delivery App (Flutter, Firebase, FastAPI, Hive)", size = 30, weight = ft.FontWeight.W_900),
+                                            
+                                           ft.Text(size = 12, value = '''Developed a food ordering app with account registration & Firebase authentication.Implemented a FastAPI backend for processing payments & verifying transactions.Transactions stored both in Firebase Firestore and locally with Hive & SharedPreferences. Users can view & update order statuses, while an admin panel (in progress) manages all orders.Also added a light and darkode which users can change in the settings .''',
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 250,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("02", size = 30, weight = FontWeight.W_900,
+                                                 ft.Text("02", size = 30, weight = ft.FontWeight.W_900,
                                                        font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             style = ButtonStyle(
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e:self.work_images(1)
-                                                             )
+                                                  ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                        on_click =  lambda e: self.work_images(1),  # Pass -1 for previous
+                                                        style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                            shape=ft.RoundedRectangleBorder(radius=10),
+                                                                            side=ft.BorderSide(1, self.color_primary))),
                                               ]
                                           ),
-                                            Text("Mario-style Platformer with Level Editor (Pygame, Python)", size = 30, weight = FontWeight.W_900),
+                                           ft.Text("Mario-style Platformer with Level Editor (Pygame, Python)", size = 30, weight = ft.FontWeight.W_900),
                                             
-                                            Text(size = 12, 
+                                           ft.Text(size = 12, 
                                                  value = 'Built a 2D platformer with a custom level editor allowing users to create & modify levels. Utilized advanced data structures (dictionaries, lists, objects) for game logic.Probably my most complex and demandin gprojects, involving intricate collision detection & game mechanics.',
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("03", size = 30, weight = FontWeight.W_900,
+                                                 ft.Text("03", size = 30, weight = ft.FontWeight.W_900,
                                                        font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             style = ButtonStyle(
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e: self.open_url(5),
-                                                             )
+                                                  ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                        on_click =  lambda e: self.work_images(3),  # Pass -1 for previous
+                                                        style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                            shape=ft.RoundedRectangleBorder(radius=10),
+                                                                            side=ft.BorderSide(1, self.color_primary))),
                                               ]
                                           ),
 
 
-                                            Text("FastAPI Backend for a Social Media App (FastAPI, JWT, PostgreSQL)", size = 30, weight = FontWeight.W_900),
+                                           ft.Text("FastAPI Backend for a Social Media App (FastAPI, JWT, PostgreSQL)", size = 30, weight = ft.FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "Developed a RESTful backend allowing users to create accounts & authenticate with JWT. Users can create, like, and fetch posts, as well as retrieve all users. Optimized database queries for performance & security.",
+                                           ft.Text(size = 12, value = "Developed a RESTful backend allowing users to create accounts & authenticate with JWT. Users can create, like, and fetch posts, as well as retrieve all users. Optimized database queries for performance & security.",
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("04", size = 30, weight = FontWeight.W_900,
+                                                 ft.Text("04", size = 30, weight = ft.FontWeight.W_900,
                                                        font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             style = ButtonStyle(
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e:self.work_images(3)
-                                                             )
+                                                  ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                        on_click =  lambda e: self.work_images(4),  # Pass -1 for previous
+                                                        style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                            shape=ft.RoundedRectangleBorder(radius=10),
+                                                                            side=ft.BorderSide(1, self.color_primary))),
                                               ]
                                           ),
-                                            Text("Personal Database App (Flutter, SQLite)", size = 30, weight = FontWeight.W_900),
+                                           ft.Text("Personal Database App (Flutter, SQLite)", size = 30, weight = ft.FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "Built a CRUD-based database app where users can store personal information (Name, Age, Email, Address). Implemented SQLite database for local storage.",
+                                           ft.Text(size = 12, value = "Built a CRUD-based database app where users can store personal information (Name, Age, Email, Address). Implemented SQLite database for local storage.",
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("05", size = 30, weight = FontWeight.W_900,
+                                                 ft.Text("05", size = 30, weight = ft.FontWeight.W_900,
                                                        font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             
-                                                             style = ButtonStyle(
-                                                                
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e: self.open_url(6),
-                                                             )
+                                                  ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                        on_click =  lambda e: self.work_images(3),  # Pass -1 for previous
+                                                        style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                            shape=ft.RoundedRectangleBorder(radius=10),
+                                                                            side=ft.BorderSide(1, self.color_primary))),
                                               ]
                                           ),
-                                            Text("Paystack Payment Processor for Mobile Apps (FastAPI, Paystack API, Flutter)", size = 30, weight = FontWeight.W_900),
+                                           ft.Text("Paystack Payment Processor for Mobile Apps (FastAPI, Paystack API, Flutter)", size = 30, weight = ft.FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "Developed a FastAPI backend for initiating & verifying Paystack transactions in Flutter apps. Ensured secure payment processing & seamless integration with mobile applications.",
+                                           ft.Text(size = 12, value = "Developed a FastAPI backend for initiating & verifying Paystack transactions in Flutter apps. Ensured secure payment processing & seamless integration with mobile applications.",
                                                  font_family = self.text_fonts)
                                           ]
                                           
                                       )
                                       ),
-                            Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
+                           ft.Container(margin = 20, expand = True, col = {"md":12,"lg":6}, height = 200,
                                       padding = 10,
-                                      border = Border(bottom = BorderSide(2, self.color_primary)),
-                                      content = Column(
+                                      border = ft.Border(bottom = ft.BorderSide(2, self.color_primary)),
+                                      content = ft.Column(
                                           controls = [
-                                            Row(
+                                           ft.Row(
                                               expand = True,
-                                              alignment = MainAxisAlignment.SPACE_BETWEEN,
-                                              vertical_alignment = CrossAxisAlignment.CENTER,
+                                              alignment = ft.MainAxisAlignment.SPACE_BETWEEN,
+                                              vertical_alignment = ft.CrossAxisAlignment.CENTER,
                                               spacing = 20,
                                               controls = [
-                                                  Text("06", size = 30, weight = FontWeight.W_900,
+                                                ft.Text("06", size = 30, weight = ft.FontWeight.W_900,
                                                        font_family = "Starjhol"),
-                                                  IconButton(icon = Icons.ARROW_OUTWARD,
-                                                             style = ButtonStyle(
-                                                                 bgcolor = self.color_primary,
-                                                                 
-                                                             ),
-                                                             on_click= lambda e:self.work_images(5)
-                                                             )
+                                                ft.ElevatedButton("more", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=100,
+                                                    on_click =  lambda e: self.work_images(6),  # Pass -1 for previous
+                                                    style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
+                                                                        shape=ft.RoundedRectangleBorder(radius=10),
+                                                                        side=ft.BorderSide(1, self.color_primary))),
                                                 ]
                                           ),
-                                            Text("Habit Tracker App with Calendar Heatmap (Flutter, Isar)", size = 30, weight = FontWeight.W_900),
+                                           ft.Text("Habit Tracker App with Calendar Heatmap (Flutter, Isar)", size = 30, weight = ft.FontWeight.W_900),
                                             
-                                            Text(size = 12, value = "Designed a habit tracking app where users can log daily activities using a calendar heatmap. Integrated Isar database for data storage and Flutter animations for an engaging UI",
+                                           ft.Text(size = 12, value = "Designed a habit tracking app where users can log daily activities using a calendar heatmap. Integrated Isar database for data storage and Flutter animations for an engaging UI",
                                                  font_family = self.text_fonts)
                                           ]
                                           
@@ -392,48 +372,48 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.summary_title = Text("My Experience", size = 30, weight = FontWeight.W_900)
+        self.summary_title =ft.Text("My Experience", size = 30, weight = ft.FontWeight.W_900)
         
-        # different containers for each reusme frames
-        self.experience_frame = Container(
+        # differentft.Containers for each reusme frames
+        self.experience_frame =ft.Container(
             expand = True,
-            content = Column(
+            content = ft.Column(
                 spacing = 10,
                 visible = True,
-                alignment = MainAxisAlignment.CENTER,
+                alignment = ft.MainAxisAlignment.CENTER,
                 expand = True,
                 controls = [
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
-                            alignment = MainAxisAlignment.CENTER,
+                            alignment = ft.MainAxisAlignment.CENTER,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("May of 2022 - December of 2022", size = 20, weight = FontWeight.W_900),
-                                            Text("The Lord is Good Computer Ltd", size = 15, weight = FontWeight.W_400),
-                                            # Text("Google", size = 12, font_family = self.text_fonts),
+                                           ft.Text("May of 2022 - December of 2022", size = 20, weight = ft.FontWeight.W_900),
+                                           ft.Text("The Lord is Good Computer Ltd", size = 15, weight = ft.FontWeight.W_400),
+                                            
                                             
                                             
                                         ]
                                     )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("January of 2023 - July of 2023", size = 18, weight = FontWeight.W_900),
-                                            Text("Not By Might Company (N.B.M.C.)", size = 12, weight = FontWeight.W_400),
-                                            # Text("Google", size = 12, font_family = self.text_fonts),
+                                           ft.Text("January of 2023 - July of 2023", size = 18, weight = ft.FontWeight.W_900),
+                                           ft.Text("Not By Might Company (N.B.M.C.)", size = 12, weight = ft.FontWeight.W_400),
+                                            
                                             
                                             
                                         ]
@@ -442,37 +422,37 @@ class Portfolio(Container) :
                             ]
                         )
                     ),
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
-                            alignment = MainAxisAlignment.CENTER,
+                            alignment = ft.MainAxisAlignment.CENTER,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text(" June of 2024 - November of 2024", size = 18, weight = FontWeight.W_900),
-                                            Text("DesDev IT Solutions", size = 12, weight = FontWeight.W_400),
-                                            # Text("Google", size = 12, font_family = self.text_fonts),
+                                           ft.Text(" June of 2024 - November of 2024", size = 18, weight = ft.FontWeight.W_900),
+                                           ft.Text("DesDev IT Solutions", size = 12, weight = ft.FontWeight.W_400),
+                                            
                                             
                                             
                                         ]
                                     )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("2024 - Present", size = 18, weight = FontWeight.W_900),
-                                            Text("", size = 12, weight = FontWeight.W_400),
-                                            Text("", size = 12, font_family = self.text_fonts),
+                                           ft.Text("2024 - Present", size = 18, weight = ft.FontWeight.W_900),
+                                           ft.Text("", size = 12, weight = ft.FontWeight.W_400),
+                                           ft.Text("", size = 12, font_family = self.text_fonts),
                                             
                                             
                                         ]
@@ -484,46 +464,46 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.education_frame = Container(
+        self.education_frame =ft.Container(
             expand = True,
             visible = False,
-            content = Column(
+            content = ft.Column(
                 spacing = 10,
                 visible = True,
-                alignment = MainAxisAlignment.CENTER,
+                alignment = ft.MainAxisAlignment.CENTER,
                 expand = True,
                 controls = [
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
-                            alignment = MainAxisAlignment.CENTER,
+                            alignment = ft.MainAxisAlignment.CENTER,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("2001 - 2012", size = 20, weight = FontWeight.W_900),
-                                            Text("Elementary Education", size = 15, weight = FontWeight.W_400),
-                                            Text("Pinecrest Group of Schools, Enugu", size = 12, font_family = self.text_fonts),
+                                           ft.Text("2001 - 2012", size = 20, weight = ft.FontWeight.W_900),
+                                           ft.Text("Elementary Education", size = 15, weight = ft.FontWeight.W_400),
+                                           ft.Text("Pinecrest Group of Schools, Enugu", size = 12, font_family = self.text_fonts),
                                             
                                             
                                         ]
                                     )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("2012 - 2018", size = 20, weight = FontWeight.W_900),
-                                            Text("Secondary School Education", size = 15, weight = FontWeight.W_400),
-                                            Text("Nigerian Navy Secondary School, Calabar", size = 12, font_family = self.text_fonts),
+                                           ft.Text("2012 - 2018", size = 20, weight = ft.FontWeight.W_900),
+                                           ft.Text("Secondary School Education", size = 15, weight = ft.FontWeight.W_400),
+                                           ft.Text("Nigerian Navy Secondary School, Calabar", size = 12, font_family = self.text_fonts),
                                             
                                             
                                         ]
@@ -532,38 +512,38 @@ class Portfolio(Container) :
                             ]
                         )
                     ),
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
-                            alignment = MainAxisAlignment.CENTER,
+                            alignment = ft.MainAxisAlignment.CENTER,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("2018 - 2023 ", size = 18, weight = FontWeight.W_900),
-                                            Text("University Education", size = 12, weight = FontWeight.W_400),
-                                            Text("Nnamdi Azikiwe University, Awka", size = 12, font_family = self.text_fonts),
-                                            Text("Majored in Electronics and Computer Engineering", size = 12, font_family = self.text_fonts),
+                                           ft.Text("2018 - 2023 ", size = 18, weight = ft.FontWeight.W_900),
+                                           ft.Text("University Education", size = 12, weight = ft.FontWeight.W_400),
+                                           ft.Text("Nnamdi Azikiwe University, Awka", size = 12, font_family = self.text_fonts),
+                                           ft.Text("Majored in Electronics and Computer Engineering", size = 12, font_family = self.text_fonts),
                                             
                                             
                                         ]
                                     )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     border_radius = 10,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
                                     padding = 13,
-                                    content = Column(
+                                    content = ft.Column(
                                         controls = [
-                                            Text("2024 - Present", size = 18, weight = FontWeight.W_900),
-                                            Text("", size = 12, weight = FontWeight.W_400),
-                                            Text("", size = 12, font_family = self.text_fonts),
+                                           ft.Text("2024 - Present", size = 18, weight = ft.FontWeight.W_900),
+                                           ft.Text("", size = 12, weight = ft.FontWeight.W_400),
+                                           ft.Text("", size = 12, font_family = self.text_fonts),
                                             
                                             
                                         ]
@@ -575,74 +555,74 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.skills_frame = Container(
+        self.skills_frame =ft.Container(
             expand = True,
             visible = False,
-            content = Column(
-                alignment = MainAxisAlignment.CENTER,
+            content = ft.Column(
+                alignment = ft.MainAxisAlignment.CENTER,
                 spacing = 10,
                 expand = True,
                 controls = [
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True, 
                                     tooltip = "Pygame",
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/pygame_logo2.svg", )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/pygame_logo2.svg", )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True, 
                                     tooltip = "Blender",
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/blender_2.svg", )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/blender_2.svg", )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     tooltip = "Python", 
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/python.svg", )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/python.svg", )
                                 ),
                             ]
                         )
                     ),
-                    Container(
+                   ft.Container(
                         expand = True,
-                        content = Row(
+                        content =ft.Row(
                             expand = True,
                             controls = [
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     tooltip = "Fastapi", 
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/fastapi_svg.svg", height = 150, width = 100 )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/fastapi_svg.svg", height = 150, width = 100 )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True, 
                                     tooltip = "After Effects",
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/adobe_Pr.svg", expand = True,  height = 150, width = 100  )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/adobe_Pr.svg", expand = True,  height = 150, width = 100  )
                                 ),
-                                Container(
+                               ft.Container(
                                     expand = True,
                                     tooltip = "Flet", 
                                     border_radius = 10,
                                     padding = 15,
-                                    bgcolor = Colors.with_opacity(0.2, self.color_primary),
-                                    content = Image(src = "/flet_svg.svg", )
+                                    bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
+                                    content = ft.Image(src = "/flet_svg.svg", )
                                 ),
                             ]
                         )
@@ -650,69 +630,69 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.resume_frame = Container(
+        self.resume_frame =ft.Container(
             expand = True,
             animate_offset = self.animation_style,
-            offset = transform.Offset(-2,0),
-            content = Column(
+            offset = ft.transform.Offset(-2,0),
+            content = ft.Column(
                 expand = True,
                 scroll = "auto",
                 controls = [
-                    ResponsiveRow(
+                    ft.ResponsiveRow(
                         spacing = 100,
                         expand = True,
                         controls = [
-                            Container(
+                           ft.Container(
                                 expand = True,
                                 margin = 20,
                                 height = 400,
-                                alignment = alignment.center,
+                                alignment = ft.alignment.center,
                                 col = {"xs":12, "sm":6},
-                                content = Column(
+                                content = ft.Column(
                                     expand = True,
-                                    horizontal_alignment = CrossAxisAlignment.CENTER,
-                                    alignment = MainAxisAlignment.SPACE_EVENLY,
+                                    horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+                                    alignment = ft.MainAxisAlignment.SPACE_EVENLY,
                                     controls = [
-                                        Text("Why hire me ?",
+                                       ft.Text("Why hire me ?",
                                              size = 30,
-                                             weight = FontWeight.W_900,
+                                             weight = ft.FontWeight.W_900,
                                              color = self.color_primary,
                                              ),
-                                        Text("As a passionate and versatile developer, I bring a unique blend of creativity and technical expertise to the table. With hands-on experience in Python frameworks like Flet, FastAPI, and Pygame, I excel at building interactive, user-focused applications that solve real-world problems.", 
+                                       ft.Text("As a passionate and versatile developer, I bring a unique blend of creativity and technical expertise to the table. With hands-on experience in Python frameworks like Flet, FastAPI, and Pygame, I excel at building interactive, user-focused applications that solve real-world problems.", 
                                              
                                              size = 16,
                                              font_family = self.text_fonts,
                                              
                                              ),
-                                        TextButton("Experience",
+                                       ft.TextButton("Experience",
                                                 width = 200,
                                                 on_click = lambda e: self.change_resume(0),
-                                                style = ButtonStyle(
+                                                style = ft.ButtonStyle(
                                                     overlay_color = {"hovered" : self.color_primary},
-                                                    shape = RoundedRectangleBorder(radius = 20),
-                                                    side = BorderSide(1, self.color_primary),
+                                                    shape = ft.RoundedRectangleBorder(radius = 20),
+                                                    side = ft.BorderSide(1, self.color_primary),
                                                     
                                                 )
                                                 
                                                 ),
-                                        TextButton("Education",
+                                       ft.TextButton("Education",
                                                 width = 200,
                                                 on_click = lambda e: self.change_resume(1),
-                                                style = ButtonStyle(
+                                                style = ft.ButtonStyle(
                                                     overlay_color = {"hovered" : self.color_primary},
-                                                    shape = RoundedRectangleBorder(radius = 20),
-                                                    side = BorderSide(1, self.color_primary),
+                                                    shape = ft.RoundedRectangleBorder(radius = 20),
+                                                    side = ft.BorderSide(1, self.color_primary),
                                                     
                                                 )
                                                 
                                                 ),
-                                        TextButton("Skillset",
+                                       ft.TextButton("Skillset",
                                                 width = 200,
                                                 on_click = lambda e: self.change_resume(2),
-                                                style = ButtonStyle(
+                                                style = ft.ButtonStyle(
                                                     overlay_color = {"hovered" : self.color_primary},
-                                                    shape = RoundedRectangleBorder(radius = 20),
-                                                    side = BorderSide(1, self.color_primary),
+                                                    shape = ft.RoundedRectangleBorder(radius = 20),
+                                                    side = ft.BorderSide(1, self.color_primary),
                                                     
                                                 )
                                                 
@@ -720,19 +700,18 @@ class Portfolio(Container) :
                                     ]
                                 )
                             ),
-                            Container(
+                           ft.Container(
                                 expand = True,
                                 margin = 20,
                                 height = 400,
                                 col = {"xs":12, "sm":6},
-                                content = Column(
+                                content = ft.Column(
                                     expand = True,
-                                    alignment = MainAxisAlignment.CENTER,
-                                    horizontal_alignment = CrossAxisAlignment.CENTER,
+                                    alignment = ft.MainAxisAlignment.CENTER,
+                                    horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                                     controls = [
                                         self.summary_title,
-                                        # Text(value = "", size = 14),
-                                        Stack(
+                                        ft.Stack(
                                             expand = True,
                                             controls = [
                                                 self.experience_frame ,
@@ -748,43 +727,43 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.contact_frame = Container(
+        self.contact_frame =ft.Container(
             expand = True,
             animate_offset = self.animation_style,
-            offset = transform.Offset(-2,0),
-            content = Column(
+            offset = ft.transform.Offset(-2,0),
+            content = ft.Column(
                 scroll = "auto",
                 expand = True,
                 controls = [
-                    ResponsiveRow(
+                    ft.ResponsiveRow(
                         expand = True,
                         controls = [
-                            Container(
+                           ft.Container(
                                 expand = True,
                                 margin = 20,
                                 height = 400,
                                 padding = 10,
-                                alignment = alignment.center,
+                                alignment = ft.alignment.center,
                                 col = {
                                     "xs":12, "sm":6
                                 },
-                                content = Column(
+                                content = ft.Column(
                                     expand = True,
-                                    horizontal_alignment = CrossAxisAlignment.CENTER,
-                                    alignment = MainAxisAlignment.SPACE_EVENLY,
+                                    horizontal_alignment = ft.CrossAxisAlignment.CENTER,
+                                    alignment = ft.MainAxisAlignment.SPACE_EVENLY,
                                     controls = [
-                                        Text("Let's work together", size = 30, weight = FontWeight.W_900),
-                                        TextField(hint_text = "Email", border_radius = 10, border_color = self.color_primary, ),
-                                        TextField(hint_text = "Email", border_radius = 10, border_color = self.color_primary, ),
-                                        TextField(hint_text = "Message", border_radius = 10, border_color = self.color_primary, multiline = True, min_lines = 5, max_lines = 6 ),
-                                        ElevatedButton(
+                                       ft.Text("Let's work together", size = 30, weight = ft.FontWeight.W_900),
+                                       ft.TextField(hint_text = "Email", border_radius = 10, border_color = self.color_primary, ),
+                                       ft.TextField(hint_text = "Email", border_radius = 10, border_color = self.color_primary, ),
+                                       ft.TextField(hint_text = "Message", border_radius = 10, border_color = self.color_primary, multiline = True, min_lines = 5, max_lines = 6 ),
+                                        ft.ElevatedButton(
                                             "Send",
                                             width = 100,
-                                            style = ButtonStyle(
+                                            style = ft.ButtonStyle(
                                                 overlay_color = {"hovered" : self.color_primary},
                                                 elevation = 20,
-                                                shape = RoundedRectangleBorder(radius = 20),
-                                                side = BorderSide(1, self.color_primary)
+                                                shape = ft.RoundedRectangleBorder(radius = 20),
+                                                side = ft.BorderSide(1, self.color_primary)
                                             )
                                         )
                                         
@@ -792,94 +771,94 @@ class Portfolio(Container) :
                                     
                                 )
                             ),
-                            Container(
+                           ft.Container(
                                 expand = True,
                                 margin = 20,
                                 height = 400,
                                 padding = 10,
-                                alignment = alignment.center,
+                                alignment = ft.alignment.center,
                                 col = {
                                     "xs":12, "sm":6
                                 },
-                                content = Column(
-                                    alignment = MainAxisAlignment.CENTER,
+                                content = ft.Column(
+                                    alignment = ft.MainAxisAlignment.CENTER,
                                     expand = True,
-                                    horizontal_alignment = CrossAxisAlignment.CENTER,
+                                    horizontal_alignment = ft.CrossAxisAlignment.CENTER,
                                     controls = [
-                                        Row(
+                                       ft.Row(
                                             controls = [
-                                                Icon(Icons.PHONE_ANDROID_OUTLINED,),
-                                                Column(
+                                                ft.Icon(ft.Icons.PHONE_ANDROID_OUTLINED,),
+                                                ft.Column(
                                                     spacing = 0,
                                                     controls = [
-                                                        Text("Phone", size = 13, color = self.color_primary),
-                                                        Text("+234-81-360-46142", size = 13, weight = FontWeight.W_900, color = self.color_primary),
+                                                       ft.Text("Phone", size = 13, color = self.color_primary),
+                                                       ft.Text("+234-81-360-46142", size = 13, weight = ft.FontWeight.W_900, color = self.color_primary),
                                                         
                                                     ]
                                                 )
                                             ]
                                         ),
-                                        Row(
+                                       ft.Row(
                                             controls = [
-                                                Icon(Icons.EMAIL_OUTLINED,),
-                                                Column(
+                                                ft.Icon(ft.Icons.EMAIL_OUTLINED,),
+                                                ft.Column(
                                                     spacing = 0,
                                                     controls = [
-                                                        Text("Email", size = 13, color = self.color_primary),
-                                                        Text("osiraogene@gmail.com", size = 13, weight = FontWeight.W_900, color = self.color_primary),
+                                                       ft.Text("Email", size = 13, color = self.color_primary),
+                                                       ft.Text("osiraogene@gmail.com", size = 13, weight = ft.FontWeight.W_900, color = self.color_primary),
                                                         
                                                     ]
                                                 )
                                             ]
                                         ),
-                                        Row(
+                                        ft.Row(
                                             controls = [
-                                                Icon(Icons.LOCATION_ON_OUTLINED,),
-                                                Column(
+                                                ft.Icon(ft.Icons.LOCATION_ON_OUTLINED,),
+                                                ft.Column(
                                                     spacing = 0,
                                                     controls = [
-                                                        Text("Location", size = 13, color = self.color_primary),
-                                                        Text("Enugu, Nigeria", size = 13, weight = FontWeight.W_900, color = self.color_primary),
+                                                        ft.Text("Location", size = 13, color = self.color_primary),
+                                                        ft.Text("Enugu, Nigeria", size = 13, weight = ft.FontWeight.W_900, color = self.color_primary),
                                                         
                                                     ]
                                                 )
                                             ]
                                         ),
-                                        Row(
-                                            alignment = MainAxisAlignment.START,
+                                        ft.Row(
+                                            alignment = ft.MainAxisAlignment.START,
                                             spacing = 20,
                                             controls = [
-                                                ElevatedButton(
-                                                    bgcolor = Colors.with_opacity(0.3, self.color_primary),
+                                                ft.ElevatedButton(
+                                                    bgcolor = ft.Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
                                                     on_click =  lambda e: self.open_url(2),
-                                                    content = Container(
+                                                    content =ft.Container(
                                                         padding = 10,
                                                         expand = True,
-                                                        content = Image(src = "twitter.svg", width = 80, height = 80),
+                                                        content = ft.Image(src = "twitter.svg", width = 80, height = 80),
                                                     )
                                                 ),
-                                                ElevatedButton(
-                                                    bgcolor = Colors.with_opacity(0.3, self.color_primary),
+                                                ft.ElevatedButton(
+                                                    bgcolor = ft.Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
                                                     on_click =  lambda e: self.open_url(3),
-                                                    content = Container(
+                                                    content =ft.Container(
                                                         padding = 10,
                                                         expand = True,
-                                                        content = Image(src = "instagram_svg.svg", width = 80, height = 80),
+                                                        content = ft.Image(src = "instagram_svg.svg", width = 80, height = 80),
                                                     )
                                                 ),
-                                                ElevatedButton(
-                                                    bgcolor = Colors.with_opacity(0.3, self.color_primary),
+                                                ft.ElevatedButton(
+                                                    bgcolor = ft.Colors.with_opacity(0.3, self.color_primary),
                                                     width = 80,
                                                     height = 80,
                                                     on_click =  lambda e: self.open_url(4),
-                                                    content = Container(
+                                                    content =ft.Container(
                                                         padding = 10,
                                                         expand = True,
-                                                        content = Image(src = "whatsapp.svg", width = 80, height = 80),
+                                                        content = ft.Image(src = "whatsapp.svg", width = 80, height = 80),
                                                     )
                                                 ),
                                             ]
@@ -894,49 +873,49 @@ class Portfolio(Container) :
                 ]
             )
         )
-        self.content = Column(
+        self.content = ft.Column(
             expand = True,
             spacing = 2,
             controls = [
-                Container(   #header
+               ft.Container(   #header
                     padding = 20,
-                    content = Row(
+                    content = ft.Row(
                         expand = True,
                         controls = [
-                            Container(
+                           ft.Container(
                                 expand = True,
-                                margin = margin.only(left = 20, ),
-                                content = Text(
+                                margin = ft.margin.only(left = 20, ),
+                                content = ft.Text(
                                     size = 20,
                                     spans = [
-                                        TextSpan("Frelix", style = TextStyle(color = Colors.PURPLE_100, weight = FontWeight.W_900)),
-                                        TextSpan("Nero", style = TextStyle(color = Colors.PURPLE_400, weight = FontWeight.W_900)),
-                                        TextSpan(".", style = TextStyle(color = Colors.PURPLE_900, weight = FontWeight.W_900))
+                                        ft.TextSpan("Frelix", style = ft.TextStyle(color = ft.Colors.PURPLE_100, weight = ft.FontWeight.W_900)),
+                                        ft.TextSpan("Nero", style = ft.TextStyle(color = ft.Colors.PURPLE_400, weight = ft.FontWeight.W_900)),
+                                        ft.TextSpan(".", style = ft.TextStyle(color = ft.Colors.PURPLE_900, weight = ft.FontWeight.W_900))
                                     ]
                                 )
                             ),
-                            ResponsiveRow(
-                                alignment = MainAxisAlignment.CENTER,
+                            ft.ResponsiveRow(
+                                alignment = ft.MainAxisAlignment.CENTER,
                                 spacing = 0,
                                 expand = True,
                                 controls = [
-                                    TextButton("Start", style = ButtonStyle(color = self.color_primary), col ={
+                                    ft.TextButton("Start", style = ft.ButtonStyle(color = self.color_primary), col ={
                                         "xs":12, "sm":6, "md":3
                                     }, on_click = lambda e: self.change_page(0) ),
-                                    TextButton("Services", style = ButtonStyle(color = self.color_primary), col ={
+                                    ft.TextButton("Services", style = ft.ButtonStyle(color = self.color_primary), col ={
                                         "xs":12, "sm":6, "md":3
                                     }, on_click = lambda e: self.change_page(1) ),
-                                    TextButton("Resume", style = ButtonStyle(color = self.color_primary), col ={
+                                    ft.TextButton("Resume", style = ft.ButtonStyle(color = self.color_primary), col ={
                                         "xs":12, "sm":6, "md":3
                                     }, on_click = lambda e: self.change_page(2) ),
-                                    TextButton("Contact me", style = ButtonStyle(color = self.color_primary), col ={
+                                    ft.TextButton("Contact me", style = ft.ButtonStyle(color = self.color_primary), col ={
                                         "xs":12, "sm":6, "md":3
                                     }, on_click = lambda e: self.change_page(3) )
                                 ]
                             ),
-                            Container(
+                           ft.Container(
                                 width = 50,
-                                margin = margin.only(right = 20),
+                                margin = ft.margin.only(right = 20),
                                 content = self.switch_mode
                                 
                             )
@@ -946,9 +925,9 @@ class Portfolio(Container) :
                         
                     )
                 ),
-                Container(          #body
+               ft.Container(          #body
                     expand = True,
-                    content = Stack(
+                    content = ft.Stack(
                         controls = [
                             self.start_frame,
                             self.service_frame,
@@ -957,11 +936,11 @@ class Portfolio(Container) :
                         ]
                     )
                 ),
-                Container(          #footer
+               ft.Container(          #footer
                     padding = 20,
-                    gradient = LinearGradient([self.color_primary, Colors.TRANSPARENT], rotation = 0),
-                    content = Text("Powered by Flet(Flutter) - All rights reserved",),
-                    alignment = alignment.center
+                    gradient = ft.LinearGradient([self.color_primary, ft.Colors.TRANSPARENT], rotation = 0),
+                    content = ft.Text("Powered by Flet(Flutter) - All rights reserved",),
+                    alignment = ft.alignment.center
                 )
             ]
         )
@@ -988,13 +967,11 @@ class Portfolio(Container) :
     
     def dark_mode(self,e) :
         if e.control.icon == "dark_mode" :
-            self.switch_mode.icon = Icons.LIGHT_MODE
+            self.switch_mode.icon = ft.Icons.LIGHT_MODE
             self.page.theme_mode = "light"
-            print("light mode")
         else : 
-            self.switch_mode.icon = Icons.DARK_MODE
+            self.switch_mode.icon = ft.Icons.DARK_MODE
             self.page.theme_mode = "dark"
-            print("theme changed")
         self.page.update()
         
     def change_resume(self,e) :
@@ -1017,7 +994,6 @@ class Portfolio(Container) :
     def open_url(self,e):
         if e == 0 :
             self.page.launch_url("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
-            # webbrowser.open("https://www.linkedin.com/in/osita-felix-368a9b175?trk=contact-info")
         elif e == 1:
             self.page.launch_url("https://github.com/frelixnero")
         elif e == 2 :
@@ -1030,20 +1006,5 @@ class Portfolio(Container) :
             self.page.launch_url("https://github.com/frelixnero/my_fastapi_backend")
         elif e == 6 :
             self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
-# def main(page: Page):
-    
-        
 
-#     # Timer to wait for 3 seconds before transitioning to main page
-    
-#     # Use a Timer to trigger the navigate_to_main function after 3 seconds
-    
-    
-    
-#     page.add(Portfolio(page))
-#     page.update()
-
-# # Start the Flet app
-# app(target=main, view = WEB_BROWSER, assets_dir = "assets")
-
-app(target = lambda page : Portfolio(page), view = WEB_BROWSER, assets_dir = "assets")
+ft.app(target = lambda page : Portfolio(page), view = ft.WEB_BROWSER, assets_dir = "assets")
