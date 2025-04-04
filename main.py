@@ -1,67 +1,107 @@
 from typing import List
 import flet as ft
+import asyncio
+import time
+
+import flet as ft
+import asyncio
+import httpx
 
 class ProjectImage(ft.View):
-    def __init__(self, page: ft.Page, src: List, title: str, sub_title: str, theme_mode: ft.ThemeMode):
+    def __init__(self, page: ft.Page, src: List[str], title: str, sub_title: str, theme_mode: ft.ThemeMode):
         super().__init__(bgcolor="#0c0f14")
         self.page = page
         self.img_src = src
         self.title = title
         self.sub_title = sub_title
-        self.color_food = "#b9894b"
-        self.container_color = "#141821"
+        self.theme_mode = theme_mode
         self.index = 0
-        self.page.theme_mode = theme_mode
-        self.color_primary = ft.Colors.PURPLE_400
+        self.load_img = self.img_src[self.index]
+        self.progress = ft.ProgressRing(width=60, height=60, color=ft.Colors.PURPLE)
+        self.controls.append(ft.Container(content=self.progress, alignment=ft.alignment.center, expand=True))
+
+        # Kick off async load
+        self.page.run_task(self.load_and_display_image)
+
+    # async def load_and_display_image(self):
+    #     try:
+    #         async with httpx.AsyncClient() as client:
+    #             response = await client.get(self.load_img, timeout=2)
+    #             if response.status_code != 200:
+    #                 # Fallback: show progress while retrying
+    #                 for _ in range(5):
+    #                     await asyncio.sleep(0.5)
+    #                     response = await client.get(self.load_img, timeout=2)
+    #                     if response.status_code == 200:
+    #                         break
+    #     except Exception:
+    #         pass
+
+    #     # Minimal wait
+    #     await asyncio.sleep(0.2)
+
+    #     self.controls.clear()
+    #     self.build_view()
+    #     self.page.update()
+    
+    # I'm skipping httpx check
+    async def load_and_display_image(self):
+        await asyncio.sleep(0.3)  # small UX delay
+        self.controls.clear()
         self.build_view()
+        self.page.update()
+
+
 
     def build_view(self):
-        self.main_container =ft.Container( 
+        self.main_container = ft.Container(
             alignment=ft.alignment.center,
             margin=10,
             expand=True,
-            image=ft.DecorationImage(src=self.img_src[self.index], fit=ft.ImageFit.CONTAIN),
+            image=ft.DecorationImage(src=self.load_img, fit=ft.ImageFit.CONTAIN),
             content=ft.Column(
-                alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER, expand=True,
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
                 controls=[
-                   ft.Row(
-                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN, controls=[
-                           ft.Container(on_click=self.close_productpage, width=30, height=30, border_radius=10,
-                                      content=ft.Icon(ft.icons.KEYBOARD_ARROW_LEFT, color=self.color_primary)),
-                           ft.Container(on_click=self.add_favorites, width=30, height=30, border_radius=10,
-                                      content=ft.Icon(ft.icons.FAVORITE, color=self.color_primary)),
+                    ft.Row(
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        controls=[
+                            ft.Container(on_click=self.close_productpage, width=30, height=30, border_radius=10,
+                                         content=ft.Icon(ft.icons.KEYBOARD_ARROW_LEFT, color=ft.Colors.PURPLE)),
+                            ft.Container(on_click=self.add_favorites, width=30, height=30, border_radius=10,
+                                         content=ft.Icon(ft.icons.FAVORITE, color=ft.Colors.PURPLE)),
                         ]
                     ),
-                   ft.Row(
-                        expand=1, alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    ft.Row(
+                        expand=1,
+                        alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                         controls=[
                             ft.ElevatedButton("PREVIOUS", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_LEFT_OUTLINED, width=120,
-                                           on_click=lambda e: self.change_image(e, -1),  # Pass -1 for previous
-                                           style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
-                                                             shape=ft.RoundedRectangleBorder(radius=10),
-                                                             side=ft.BorderSide(1, self.color_primary))),
+                                              on_click=lambda e: self.change_image(e, -1),
+                                              style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10))),
                             ft.ElevatedButton("FORWARD", icon=ft.Icons.KEYBOARD_DOUBLE_ARROW_RIGHT_OUTLINED, width=120,
-                                           on_click=lambda e: self.change_image(e, 1), # Pass 1 for next
-                                           style=ft.ButtonStyle(overlay_color={"hovered": self.color_primary}, elevation=20,
-                                                             shape=ft.RoundedRectangleBorder(radius=10),
-                                                             side=ft.BorderSide(1, self.color_primary)))
+                                              on_click=lambda e: self.change_image(e, 1),
+                                              style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)))
                         ]
-                    ),
+                    )
                 ]
-            ),
+            )
         )
         self.controls.append(self.main_container)
 
-    def change_image(self, e, direction): # Added direction parameter
+    def change_image(self, e, direction):
         self.index += direction
-
         if self.index < 0:
             self.index = len(self.img_src) - 1
         elif self.index >= len(self.img_src):
             self.index = 0
 
-        self.main_container.image.src = self.img_src[self.index]
+        self.load_img = self.img_src[self.index]
+        self.controls.clear()
+        self.controls.append(ft.Container(content=self.progress, alignment=ft.alignment.center, expand=True))
         self.page.update()
+        self.page.run_task(self.load_and_display_image)
 
     def close_productpage(self, e):
         self.page.views.pop()
@@ -69,6 +109,10 @@ class ProjectImage(ft.View):
 
     def add_favorites(self, e):
         pass
+
+       
+
+    
 
 
 class Portfolio(ft.Container) :
@@ -97,7 +141,7 @@ class Portfolio(ft.Container) :
         elif e == 5 :
             self.page.launch_url("https://github.com/frelixnero/Paystack_Verfication_with_FastApi_for_Flutter_apps")
         elif e == 6 :
-            return
+            img_src = ["/habit/habit_app_1.jpg","/habit/habit_app_2.jpg","/habit/habit_app_3.jpg","/habit/habit_app_4.jpg","/habit/habit_app_5.jpg", "/habit/habit_app_6.jpg", "/habit/habit_app_7.jpg", "/habit/habit_app_8.jpg"]
         
         image_view = ProjectImage(page=self.page, src=img_src, title="testing", sub_title="any", theme_mode=self.page.theme_mode) 
         
@@ -610,11 +654,11 @@ class Portfolio(ft.Container) :
                                 ),
                                ft.Container(
                                     expand = True, 
-                                    tooltip = "After Effects",
+                                    tooltip = "Flutter",
                                     border_radius = 10,
                                     padding = 15,
                                     bgcolor = ft.Colors.with_opacity(0.2, self.color_primary),
-                                    content = ft.Image(src = "/adobe_Pr.svg", expand = True,  height = 150, width = 100  )
+                                    content = ft.Image(src = "/flutter_svg.svg", expand = True,  height = 150, width = 100  )
                                 ),
                                ft.Container(
                                     expand = True,
@@ -658,7 +702,7 @@ class Portfolio(ft.Container) :
                                              weight = ft.FontWeight.W_900,
                                              color = self.color_primary,
                                              ),
-                                       ft.Text("As a passionate and versatile developer, I bring a unique blend of creativity and technical expertise to the table. With hands-on experience in Python frameworks like Flet, FastAPI, and Pygame, I excel at building interactive, user-focused applications that solve real-world problems.", 
+                                       ft.Text("As a passionate and versatile developer, I bring a unique blend of creativity and technical expertise to the table. With hands-on experience in Python frameworks like Flet, FastAPI, and Pygame coupled with a grounded understanding of modern GUI development with Flutter, I excel at building interactive, user-focused applications that solve real-world problems.", 
                                              
                                              size = 16,
                                              font_family = self.text_fonts,
