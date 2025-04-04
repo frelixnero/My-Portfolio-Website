@@ -1,11 +1,6 @@
 from typing import List
 import flet as ft
 import asyncio
-import time
-
-import flet as ft
-import asyncio
-import httpx
 
 class ProjectImage(ft.View):
     def __init__(self, page: ft.Page, src: List[str], title: str, sub_title: str, theme_mode: ft.ThemeMode):
@@ -46,7 +41,7 @@ class ProjectImage(ft.View):
     
     # I'm skipping httpx check
     async def load_and_display_image(self):
-        await asyncio.sleep(0.3)  # small UX delay
+        # await asyncio.sleep(0.3)  # small UX delay
         self.controls.clear()
         self.build_view()
         self.page.update()
